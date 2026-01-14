@@ -2,7 +2,7 @@ import { useTasks } from './hooks/useTasks'
 import { Board } from './components/Board'
 
 function App() {
-  const { tasks, isLoading, resetTasks } = useTasks()
+  const { tasks, isLoading, resetTasks, changeTaskStatus } = useTasks()
 
   if (isLoading) {
     return (
@@ -12,14 +12,25 @@ function App() {
     )
   }
 
+  /**
+   * 태스크 드래그 앤 드롭 핸들러
+   */
+  const handleTaskMove = (taskId, newStatus) => {
+    changeTaskStatus(taskId, newStatus)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <header className="border-b bg-white shadow-sm">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">칸반 태스크 매니저</h1>
-              <p className="mt-2 text-sm text-gray-500">총 {tasks.length}개의 태스크</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                칸반 태스크 매니저
+              </h1>
+              <p className="mt-2 text-sm text-gray-500">
+                총 {tasks.length}개의 태스크
+              </p>
             </div>
             <button
               onClick={resetTasks}
@@ -32,7 +43,7 @@ function App() {
       </header>
 
       <main className="container mx-auto px-6 py-8 md:py-10">
-        <Board tasks={tasks} />
+        <Board tasks={tasks} onTaskMove={handleTaskMove} />
       </main>
     </div>
   )
