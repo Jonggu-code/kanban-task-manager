@@ -64,7 +64,7 @@ export const initialTasks = [
   {
     id: 'task-006',
     title: '태스크 검색 기능 구현',
-    description: '제목, 설명, 태그 기반 실시간 검색 기능 개발',
+    description: '검색 기능 (일단 제목 기준으로)',
     status: TASK_STATUS.TODO,
     priority: TASK_PRIORITY.MEDIUM,
     createdAt: '2026-01-13T14:00:00.000Z',
