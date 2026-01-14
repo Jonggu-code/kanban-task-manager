@@ -37,7 +37,7 @@ export const initialTasks = [
     createdAt: '2026-01-13T11:00:00.000Z',
     updatedAt: '2026-01-14T16:45:00.000Z',
     dueDate: '2026-01-15T18:00:00.000Z',
-    tags: ['개발', '컴포넌트'],
+    tags: ['개발', '컴포넌트', '2개 이상', '보기 위한'],
   },
   {
     id: 'task-004',
@@ -59,7 +59,7 @@ export const initialTasks = [
     createdAt: '2026-01-13T13:00:00.000Z',
     updatedAt: '2026-01-13T13:00:00.000Z',
     dueDate: '2026-01-16T18:00:00.000Z',
-    tags: ['개발', '기능'],
+    tags: ['개발', '기능', '추가 태그'],
   },
   {
     id: 'task-006',
@@ -70,7 +70,7 @@ export const initialTasks = [
     createdAt: '2026-01-13T14:00:00.000Z',
     updatedAt: '2026-01-13T14:00:00.000Z',
     dueDate: '2026-01-16T18:00:00.000Z',
-    tags: ['개발', '기능'],
+    tags: ['개발', '기능', '입니다'],
   },
   {
     id: 'task-007',
