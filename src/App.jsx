@@ -5,7 +5,7 @@ import { TaskModal } from './components/Task/TaskModal'
 import { createTask } from './data/taskStructure'
 
 function App() {
-  const { tasks, isLoading, resetTasks, changeTaskStatus, addTask, updateTask } = useTasks()
+  const { tasks, isLoading, resetTasks, changeTaskStatus, addTask, updateTask, deleteTask } = useTasks()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
 
@@ -41,6 +41,13 @@ function App() {
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setEditingTask(null)
+  }
+
+  const handleDeleteTask = taskId => {
+    if (window.confirm('정말로 이 태스크를 삭제하시겠습니까?')) {
+      deleteTask(taskId)
+      setEditingTask(null)
+    }
   }
 
   return (
@@ -82,6 +89,7 @@ function App() {
         <TaskModal
           onClose={handleCloseModal}
           onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
+          onDelete={handleDeleteTask}
           task={editingTask}
         />
       )}

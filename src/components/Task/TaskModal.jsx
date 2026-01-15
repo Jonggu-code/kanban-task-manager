@@ -17,11 +17,13 @@ const formatDate = dateString => {
   })
 }
 
-export const TaskModal = ({ onClose, onSubmit, task = null }) => {
+export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
   const isEditMode = task !== null
   const [title, setTitle] = useState(task?.title || '')
   const [description, setDescription] = useState(task?.description || '')
-  const [priority, setPriority] = useState(task?.priority || TASK_PRIORITY.MEDIUM)
+  const [priority, setPriority] = useState(
+    task?.priority || TASK_PRIORITY.MEDIUM
+  )
   const [error, setError] = useState('')
 
   const handleSubmit = event => {
@@ -125,30 +127,47 @@ export const TaskModal = ({ onClose, onSubmit, task = null }) => {
                 )}
                 <div className="flex items-center gap-2">
                   <span className="w-16 shrink-0 text-gray-500">생성일</span>
-                  <span className="text-gray-700">{formatDate(task.createdAt)}</span>
+                  <span className="text-gray-700">
+                    {formatDate(task.createdAt)}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-16 shrink-0 text-gray-500">수정일</span>
-                  <span className="text-gray-700">{formatDate(task.updatedAt)}</span>
+                  <span className="text-gray-700">
+                    {formatDate(task.updatedAt)}
+                  </span>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="flex justify-end gap-2 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+          <div className="flex justify-between pt-2">
+            {isEditMode && onDelete && (
+              <button
+                type="button"
+                onClick={() => onDelete(task.id)}
+                className="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
+              >
+                삭제
+              </button>
+            )}
+            <div
+              className={`flex gap-2 ${!isEditMode || !onDelete ? 'ml-auto' : ''}`}
             >
-              취소
-            </button>
-            <button
-              type="submit"
-              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-            >
-              {isEditMode ? '수정 완료' : '태스크 생성'}
-            </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+              >
+                취소
+              </button>
+              <button
+                type="submit"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+              >
+                {isEditMode ? '수정 완료' : '태스크 생성'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
