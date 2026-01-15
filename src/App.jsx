@@ -5,8 +5,9 @@ import { TaskModal } from './components/Task/TaskModal'
 import { createTask } from './data/taskStructure'
 
 function App() {
-  const { tasks, isLoading, resetTasks, changeTaskStatus, addTask } = useTasks()
+  const { tasks, isLoading, resetTasks, changeTaskStatus, addTask, updateTask } = useTasks()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingTask, setEditingTask] = useState(null)
 
   if (isLoading) {
     return (
@@ -26,6 +27,20 @@ function App() {
   const handleCreateTask = taskData => {
     addTask(createTask(taskData))
     setIsModalOpen(false)
+  }
+
+  const handleEditTask = task => {
+    setEditingTask(task)
+  }
+
+  const handleUpdateTask = taskData => {
+    updateTask(editingTask.id, taskData)
+    setEditingTask(null)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setEditingTask(null)
   }
 
   return (
@@ -60,13 +75,14 @@ function App() {
       </header>
 
       <main className="container mx-auto px-6 py-8 md:py-10">
-        <Board tasks={tasks} onTaskMove={handleTaskMove} />
+        <Board tasks={tasks} onTaskMove={handleTaskMove} onTaskEdit={handleEditTask} />
       </main>
 
-      {isModalOpen && (
+      {(isModalOpen || editingTask) && (
         <TaskModal
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleCreateTask}
+          onClose={handleCloseModal}
+          onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
+          task={editingTask}
         />
       )}
     </div>

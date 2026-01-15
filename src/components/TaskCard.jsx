@@ -7,7 +7,7 @@ import {
 /**
  * 개별 태스크를 표시하는 카드 컴포넌트
  */
-export const TaskCard = ({ task, index }) => {
+export const TaskCard = ({ task, index, onEdit }) => {
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -15,6 +15,7 @@ export const TaskCard = ({ task, index }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          onClick={() => onEdit(task)}
           className={`group cursor-pointer rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition-all hover:shadow-lg ${
             snapshot.isDragging ? 'rotate-3 shadow-2xl' : ''
           }`}

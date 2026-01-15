@@ -7,10 +7,11 @@ const PRIORITY_OPTIONS = [
   { value: TASK_PRIORITY.HIGH, label: '높음' },
 ]
 
-export const TaskModal = ({ onClose, onSubmit }) => {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [priority, setPriority] = useState(TASK_PRIORITY.MEDIUM)
+export const TaskModal = ({ onClose, onSubmit, task = null }) => {
+  const isEditMode = task !== null
+  const [title, setTitle] = useState(task?.title || '')
+  const [description, setDescription] = useState(task?.description || '')
+  const [priority, setPriority] = useState(task?.priority || TASK_PRIORITY.MEDIUM)
   const [error, setError] = useState('')
 
   const handleSubmit = event => {
@@ -36,7 +37,9 @@ export const TaskModal = ({ onClose, onSubmit }) => {
     >
       <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">새 태스크 추가</h2>
+          <h2 className="text-xl font-bold text-gray-900">
+            {isEditMode ? '태스크 수정' : '새 태스크 추가'}
+          </h2>
           <button
             type="button"
             onClick={onClose}
@@ -101,7 +104,7 @@ export const TaskModal = ({ onClose, onSubmit }) => {
               type="submit"
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
             >
-              태스크 생성
+              {isEditMode ? '수정 완료' : '태스크 생성'}
             </button>
           </div>
         </form>
