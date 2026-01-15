@@ -1,16 +1,37 @@
-# React + Vite
+# 칸반 태스크 매니저
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 기반의 칸반 보드 스타일 태스크 관리 애플리케이션입니다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 미구현 기능
 
-## React Compiler
+제한된 개발 기간(72시간) 내 완성도와 안정성을 우선하여, 아래 기능들은 의도적으로 구현 범위에서 제외하였습니다.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 태그 편집 기능
 
-## Expanding the ESLint configuration
+- **현재 상태**: 태그는 읽기 전용으로만 표시됩니다.
+- **제외 사유**: 태그 추가/삭제 UI, 중복 검사, validation 등 추가 작업량이 많아 핵심 기능 완성에 집중하기 위해 제외하였습니다.
+- **향후 계획**: 태그 입력 필드와 삭제 버튼을 추가하여 편집 가능하도록 개선 예정입니다.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 마감일(Due Date) 기능
+
+- **현재 상태**: 데이터 구조에는 정의되어 있으나 UI에서 표시/수정하지 않습니다.
+- **제외 사유**: DatePicker UI 구현, 날짜 validation, 마감일 기반 정렬/필터링 등 연관 기능의 작업량이 커서 제외하였습니다.
+- **향후 계획**: 캘린더 기반 날짜 선택 UI와 마감일 임박 알림 기능을 추가할 예정입니다.
+
+### 태스크 정렬 기능
+
+- **현재 상태**: 태스크는 생성 순서대로 표시됩니다.
+- **제외 사유**: 우선순위, 생성일, 마감일 등 다양한 정렬 기준과 UI 구현이 필요하여 제외하였습니다.
+- **향후 계획**: 컬럼 헤더에 정렬 옵션을 추가하여 사용자가 원하는 기준으로 정렬할 수 있도록 개선 예정입니다.
+
+### 우선순위 필터링
+
+- **현재 상태**: 모든 우선순위의 태스크가 함께 표시됩니다.
+- **제외 사유**: 필터 UI와 상태 관리 로직 추가가 필요하여, 검색 기능 구현을 우선하였습니다.
+- **향후 계획**: 헤더 영역에 우선순위 필터 버튼을 추가할 예정입니다.
+
+---
+
+> 기능의 "개수"보다 "동작 안정성"과 "설명 가능성"을 기준으로 구현 범위를 결정하였습니다.

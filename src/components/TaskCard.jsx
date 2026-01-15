@@ -4,6 +4,15 @@ import {
   TASK_PRIORITY_COLORS,
 } from '../data/taskStructure'
 
+const formatShortDate = dateString => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('ko-KR', {
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
 /**
  * 개별 태스크를 표시하는 카드 컴포넌트
  */
@@ -20,11 +29,28 @@ export const TaskCard = ({ task, index, onEdit }) => {
             snapshot.isDragging ? 'rotate-3 shadow-2xl' : ''
           }`}
         >
-          <div className="mb-3">
-            <h3 className="text-md font-bold text-gray-900 group-hover:text-blue-600">
-              {task.title}
-            </h3>
-          </div>
+          {task.createdAt && (
+            <div className="mb-2 flex items-center gap-1.5 text-xs text-gray-400">
+              <svg
+                className="h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              <span>{formatShortDate(task.createdAt)}</span>
+            </div>
+          )}
+
+          <h3 className="mb-1 font-bold text-gray-900 group-hover:text-blue-600">
+            {task.title}
+          </h3>
 
           {task.description && (
             <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-500">

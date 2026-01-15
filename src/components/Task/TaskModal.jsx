@@ -7,6 +7,16 @@ const PRIORITY_OPTIONS = [
   { value: TASK_PRIORITY.HIGH, label: '높음' },
 ]
 
+const formatDate = dateString => {
+  if (!dateString) return '-'
+  const date = new Date(dateString)
+  return date.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
 export const TaskModal = ({ onClose, onSubmit, task = null }) => {
   const isEditMode = task !== null
   const [title, setTitle] = useState(task?.title || '')
@@ -91,6 +101,39 @@ export const TaskModal = ({ onClose, onSubmit, task = null }) => {
               ))}
             </select>
           </div>
+
+          {isEditMode && (
+            <div className="rounded-lg border border-gray-100 bg-gray-50 p-4">
+              <h3 className="mb-3 text-sm font-semibold text-gray-700">
+                태스크 정보
+              </h3>
+              <div className="space-y-2 text-sm">
+                {task.tags && task.tags.length > 0 && (
+                  <div className="flex items-start gap-2">
+                    <span className="w-16 shrink-0 text-gray-500">태그</span>
+                    <div className="flex flex-wrap gap-1">
+                      {task.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="rounded-md bg-gray-200 px-2 py-0.5 text-xs text-gray-700"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <span className="w-16 shrink-0 text-gray-500">생성일</span>
+                  <span className="text-gray-700">{formatDate(task.createdAt)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-16 shrink-0 text-gray-500">수정일</span>
+                  <span className="text-gray-700">{formatDate(task.updatedAt)}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="flex justify-end gap-2 pt-2">
             <button
