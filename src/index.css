@@ -24,6 +24,36 @@
 }
 
 @layer utilities {
+  @keyframes task-enter {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes task-exit {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(4px) scale(0.985);
+    }
+  }
+
+  .animate-task-enter {
+    animation: task-enter 180ms ease-out both;
+  }
+
+  .animate-task-exit {
+    animation: task-exit 180ms ease-in both;
+  }
+
   /* 커스텀 스크롤바 스타일 */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;

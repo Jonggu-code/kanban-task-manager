@@ -9,7 +9,13 @@ import { TASK_STATUS, TASK_STATUS_LABELS } from '../data/taskStructure'
  * Desktop/Tablet: 3단계 컬럼 (할 일, 진행 중, 완료)
  * Mobile: 상태 탭으로 전환하여 한 번에 하나의 컬럼만 표시
  */
-export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
+export const Board = ({
+  tasks,
+  onTaskMove,
+  onTaskEdit,
+  highlightQuery,
+  pendingDeleteIds,
+}) => {
   const [mobileActiveTab, setMobileActiveTab] = useState(TASK_STATUS.TODO)
 
   // 상태별로 태스크 필터링
@@ -106,6 +112,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
           droppableId={mobileActiveTab}
           onTaskEdit={onTaskEdit}
           highlightQuery={highlightQuery}
+          pendingDeleteIds={pendingDeleteIds}
           isMobile
         />
       </div>
@@ -120,6 +127,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
           droppableId={TASK_STATUS.TODO}
           onTaskEdit={onTaskEdit}
           highlightQuery={highlightQuery}
+          pendingDeleteIds={pendingDeleteIds}
         />
         <Column
           title={TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
@@ -129,6 +137,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
           droppableId={TASK_STATUS.IN_PROGRESS}
           onTaskEdit={onTaskEdit}
           highlightQuery={highlightQuery}
+          pendingDeleteIds={pendingDeleteIds}
         />
         <Column
           title={TASK_STATUS_LABELS[TASK_STATUS.DONE]}
@@ -138,6 +147,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
           droppableId={TASK_STATUS.DONE}
           onTaskEdit={onTaskEdit}
           highlightQuery={highlightQuery}
+          pendingDeleteIds={pendingDeleteIds}
         />
       </div>
     </DragDropContext>

@@ -11,6 +11,7 @@ import { createTask } from './data/taskStructure'
 
 function App() {
   const { theme, toggleTheme } = useTheme()
+  const [pendingDeleteIds, setPendingDeleteIds] = useState(() => new Set())
   const {
     tasks,
     isLoading,
@@ -67,10 +68,26 @@ function App() {
     setEditingTask(null)
   }
 
+  const scheduleDeleteTask = taskId => {
+    setPendingDeleteIds(prev => {
+      const next = new Set(prev)
+      next.add(taskId)
+      return next
+    })
+
+    window.setTimeout(() => {
+      deleteTask(taskId)
+      setPendingDeleteIds(prev => {
+        const next = new Set(prev)
+        next.delete(taskId)
+        return next
+      })
+    }, 180)
+  }
+
   const handleDeleteTask = taskId => {
     if (window.confirm('정말로 이 태스크를 삭제하시겠습니까?')) {
-      deleteTask(taskId)
-      setEditingTask(null)
+      scheduleDeleteTask(taskId)
     }
   }
 
@@ -119,6 +136,7 @@ function App() {
             onTaskMove={handleTaskMove}
             onTaskEdit={handleEditTask}
             highlightQuery={debouncedSearchQuery}
+            pendingDeleteIds={pendingDeleteIds}
           />
         )}
       </main>

@@ -15,6 +15,7 @@ export const Column = ({
   droppableId,
   onTaskEdit,
   highlightQuery,
+  pendingDeleteIds,
   isMobile = false,
 }) => {
   return (
@@ -56,6 +57,7 @@ export const Column = ({
                   index={index}
                   onEdit={onTaskEdit}
                   highlightQuery={highlightQuery}
+                  isExiting={pendingDeleteIds?.has?.(task.id)}
                 />
               ))
             ) : (

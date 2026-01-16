@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { TASK_PRIORITY, TASK_PRIORITY_LABELS } from '../../data/taskStructure'
 
 const formatDate = dateString => {
@@ -24,6 +24,31 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
   const [dragY, setDragY] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const touchStartY = useRef(0)
+  const [isOpen, setIsOpen] = useState(false)
+  const closeTimerRef = useRef(null)
+
+  useEffect(() => {
+    const raf = window.requestAnimationFrame(() => setIsOpen(true))
+    return () => {
+      window.cancelAnimationFrame(raf)
+      if (closeTimerRef.current) {
+        window.clearTimeout(closeTimerRef.current)
+      }
+    }
+  }, [])
+
+  const requestClose = ({ toBottom = false } = {}) => {
+    if (closeTimerRef.current) return
+    setIsOpen(false)
+
+    if (toBottom) {
+      setDragY(window.innerHeight || 800)
+    }
+
+    closeTimerRef.current = window.setTimeout(() => {
+      onClose()
+    }, 180)
+  }
 
   const handleTouchStart = e => {
     touchStartY.current = e.touches[0].clientY
@@ -44,7 +69,8 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
     setIsDragging(false)
     // 100px 이상 드래그하면 모달 닫기
     if (dragY > 100) {
-      onClose()
+      requestClose({ toBottom: true })
+      return
     }
     setDragY(0)
   }
@@ -64,18 +90,30 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
     })
   }
 
+  const overlayBaseAlpha = 0.45
+  const dragFadeFactor = Math.max(0, 1 - dragY / 240)
+  const overlayAlpha = overlayBaseAlpha * (isOpen ? 1 : 0) * dragFadeFactor
+  const panelOpacity = (isOpen ? 1 : 0) * dragFadeFactor
+  const panelTranslateY = (isOpen ? 0 : 24) + dragY
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 px-0 md:items-center md:px-4"
+      className="fixed inset-0 z-50 flex items-end justify-center px-0 transition-[background-color] duration-200 ease-out md:items-center md:px-4"
       role="dialog"
       aria-modal="true"
-      onClick={e => e.target === e.currentTarget && onClose()}
+      onClick={e => e.target === e.currentTarget && requestClose()}
+      style={{
+        backgroundColor: `rgba(0,0,0,${overlayAlpha})`,
+      }}
     >
       <div
         className="max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-900 md:max-w-lg md:rounded-2xl md:p-6"
         style={{
-          transform: `translateY(${dragY}px)`,
-          transition: isDragging ? 'none' : 'transform 0.2s ease-out',
+          opacity: panelOpacity,
+          transform: `translateY(${panelTranslateY}px)`,
+          transition: isDragging
+            ? 'none'
+            : 'transform 0.2s ease-out, opacity 0.2s ease-out',
         }}
       >
         {/* 모바일 핸들바 */}
@@ -94,7 +132,7 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
           </h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => requestClose()}
             className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 md:px-2 md:py-1"
           >
             <svg
@@ -209,7 +247,10 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
               {isEditMode && onDelete && (
                 <button
                   type="button"
-                  onClick={() => onDelete(task.id)}
+                  onClick={() => {
+                    onDelete(task.id)
+                    requestClose()
+                  }}
                   className="w-full rounded-lg border border-red-200 px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:border-red-900/40 dark:text-red-300 dark:hover:bg-red-900/20 md:w-auto md:px-4 md:py-2"
                 >
                   삭제
@@ -219,7 +260,7 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
             <div className="flex w-full gap-2 md:w-auto">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={() => requestClose()}
                 className="flex-1 rounded-lg border border-gray-200 px-3 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 md:flex-none md:px-4 md:py-2"
               >
                 취소
