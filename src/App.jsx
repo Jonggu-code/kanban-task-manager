@@ -8,6 +8,7 @@ import { Board } from './components/Board'
 import { TaskModal } from './components/Task/TaskModal'
 import { EmptySearchResult } from './components/common/EmptySearchResult'
 import { KeyboardShortcutsModal } from './components/common/KeyboardShortcutsModal'
+import { MoveTopButton } from './components/common/MoveTopButton'
 import { createTask } from './data/taskStructure'
 
 function App() {
@@ -226,6 +227,8 @@ function App() {
         isOpen={isShortcutsModalOpen}
         onClose={() => setIsShortcutsModalOpen(false)}
       />
+
+      <MoveTopButton />
 
       <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3">
         <button
