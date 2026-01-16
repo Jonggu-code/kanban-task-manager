@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { useTasks } from './hooks/useTasks'
 import { Board } from './components/Board'
 import { TaskModal } from './components/Task/TaskModal'
-import { createTask } from './data/taskStructure'
+import { createTask, TASK_PRIORITY_LABELS } from './data/taskStructure'
 
 function App() {
   const { tasks, isLoading, resetTasks, changeTaskStatus, addTask, updateTask, deleteTask } = useTasks()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [priorityFilter, setPriorityFilter] = useState('all')
 
   if (isLoading) {
     return (
@@ -51,12 +52,14 @@ function App() {
     }
   }
 
-  // 검색어로 태스크 필터링
-  const filteredTasks = searchQuery.trim()
-    ? tasks.filter(task =>
-        task.title.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : tasks
+  // 검색어 + 우선순위 필터링 (AND 조건)
+  const filteredTasks = tasks.filter(task => {
+    const matchesSearch = searchQuery.trim()
+      ? task.title.toLowerCase().includes(searchQuery.toLowerCase())
+      : true
+    const matchesPriority = priorityFilter === 'all' || task.priority === priorityFilter
+    return matchesSearch && matchesPriority
+  })
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -94,6 +97,18 @@ function App() {
                   className="w-48 rounded-lg border border-gray-200 py-2 pl-9 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
+              <select
+                value={priorityFilter}
+                onChange={e => setPriorityFilter(e.target.value)}
+                className="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="all">전체 우선순위</option>
+                {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-sm"
