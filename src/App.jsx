@@ -21,6 +21,7 @@ function App() {
   } = useTasks()
   const {
     searchQuery,
+    debouncedSearchQuery,
     priorityFilter,
     statusFilter,
     setSearchQuery,
@@ -159,6 +160,7 @@ function App() {
           tasks={filteredTasks}
           onTaskMove={handleTaskMove}
           onTaskEdit={handleEditTask}
+          highlightQuery={debouncedSearchQuery}
         />
       </main>
 

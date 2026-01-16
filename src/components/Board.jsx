@@ -6,7 +6,7 @@ import { TASK_STATUS, TASK_STATUS_LABELS } from '../data/taskStructure'
  * 칸반 보드 메인 컴포넌트
  * 3단계 컬럼 (할 일, 진행 중, 완료)으로 구성
  */
-export const Board = ({ tasks, onTaskMove, onTaskEdit }) => {
+export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
   // 상태별로 태스크 필터링
   const todoTasks = tasks.filter(task => task.status === TASK_STATUS.TODO)
   const inProgressTasks = tasks.filter(
@@ -50,6 +50,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit }) => {
           headerBgColor="bg-blue-100"
           droppableId={TASK_STATUS.TODO}
           onTaskEdit={onTaskEdit}
+          highlightQuery={highlightQuery}
         />
         <Column
           title={TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
@@ -58,6 +59,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit }) => {
           headerBgColor="bg-yellow-100"
           droppableId={TASK_STATUS.IN_PROGRESS}
           onTaskEdit={onTaskEdit}
+          highlightQuery={highlightQuery}
         />
         <Column
           title={TASK_STATUS_LABELS[TASK_STATUS.DONE]}
@@ -66,6 +68,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit }) => {
           headerBgColor="bg-green-100"
           droppableId={TASK_STATUS.DONE}
           onTaskEdit={onTaskEdit}
+          highlightQuery={highlightQuery}
         />
       </div>
     </DragDropContext>

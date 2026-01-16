@@ -11,6 +11,7 @@ export const Column = ({
   headerBgColor,
   droppableId,
   onTaskEdit,
+  highlightQuery,
 }) => {
   return (
     <div className="flex h-[600px] w-full flex-col overflow-y-auto rounded-xl bg-white p-4 shadow-sm md:w-80">
@@ -36,7 +37,13 @@ export const Column = ({
           >
             {tasks.length > 0 ? (
               tasks.map((task, index) => (
-                <TaskCard key={task.id} task={task} index={index} onEdit={onTaskEdit} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  index={index}
+                  onEdit={onTaskEdit}
+                  highlightQuery={highlightQuery}
+                />
               ))
             ) : (
               <div className="flex h-32 items-center justify-center">

@@ -3,6 +3,7 @@ import {
   TASK_PRIORITY_LABELS,
   TASK_PRIORITY_COLORS,
 } from '../data/taskStructure'
+import { HighlightedText } from './common/HighlightedText'
 
 const formatShortDate = dateString => {
   if (!dateString) return ''
@@ -16,7 +17,7 @@ const formatShortDate = dateString => {
 /**
  * 개별 태스크를 표시하는 카드 컴포넌트
  */
-export const TaskCard = ({ task, index, onEdit }) => {
+export const TaskCard = ({ task, index, onEdit, highlightQuery }) => {
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -49,12 +50,12 @@ export const TaskCard = ({ task, index, onEdit }) => {
           )}
 
           <h3 className="mb-1 font-bold text-gray-900 group-hover:text-blue-600">
-            {task.title}
+            <HighlightedText text={task.title} query={highlightQuery} />
           </h3>
 
           {task.description && (
             <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-500">
-              {task.description}
+              <HighlightedText text={task.description} query={highlightQuery} />
             </p>
           )}
 
