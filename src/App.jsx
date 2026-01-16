@@ -8,6 +8,7 @@ function App() {
   const { tasks, isLoading, resetTasks, changeTaskStatus, addTask, updateTask, deleteTask } = useTasks()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
 
   if (isLoading) {
     return (
@@ -50,6 +51,13 @@ function App() {
     }
   }
 
+  // 검색어로 태스크 필터링
+  const filteredTasks = searchQuery.trim()
+    ? tasks.filter(task =>
+        task.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : tasks
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <header className="border-b bg-white shadow-sm">
@@ -63,7 +71,29 @@ function App() {
                 총 {tasks.length}개의 태스크
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <svg
+                  className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="태스크 검색..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-48 rounded-lg border border-gray-200 py-2 pl-9 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-sm"
@@ -82,7 +112,7 @@ function App() {
       </header>
 
       <main className="container mx-auto px-6 py-8 md:py-10">
-        <Board tasks={tasks} onTaskMove={handleTaskMove} onTaskEdit={handleEditTask} />
+        <Board tasks={filteredTasks} onTaskMove={handleTaskMove} onTaskEdit={handleEditTask} />
       </main>
 
       {(isModalOpen || editingTask) && (
