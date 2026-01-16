@@ -47,7 +47,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit }) => {
           title={TASK_STATUS_LABELS[TASK_STATUS.TODO]}
           tasks={todoTasks}
           headerColor="text-blue-700"
-          headerBgColor="bg-blue-50"
+          headerBgColor="bg-blue-100"
           droppableId={TASK_STATUS.TODO}
           onTaskEdit={onTaskEdit}
         />
@@ -55,7 +55,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit }) => {
           title={TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
           tasks={inProgressTasks}
           headerColor="text-yellow-700"
-          headerBgColor="bg-yellow-50"
+          headerBgColor="bg-yellow-100"
           droppableId={TASK_STATUS.IN_PROGRESS}
           onTaskEdit={onTaskEdit}
         />
@@ -63,7 +63,7 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit }) => {
           title={TASK_STATUS_LABELS[TASK_STATUS.DONE]}
           tasks={doneTasks}
           headerColor="text-green-700"
-          headerBgColor="bg-green-50"
+          headerBgColor="bg-green-100"
           droppableId={TASK_STATUS.DONE}
           onTaskEdit={onTaskEdit}
         />

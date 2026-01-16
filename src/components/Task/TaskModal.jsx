@@ -1,11 +1,5 @@
 import { useState } from 'react'
-import { TASK_PRIORITY } from '../../data/taskStructure'
-
-const PRIORITY_OPTIONS = [
-  { value: TASK_PRIORITY.LOW, label: '낮음' },
-  { value: TASK_PRIORITY.MEDIUM, label: '보통' },
-  { value: TASK_PRIORITY.HIGH, label: '높음' },
-]
+import { TASK_PRIORITY, TASK_PRIORITY_LABELS } from '../../data/taskStructure'
 
 const formatDate = dateString => {
   if (!dateString) return '-'
@@ -96,9 +90,9 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
               onChange={event => setPriority(event.target.value)}
               className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
             >
-              {PRIORITY_OPTIONS.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
                 </option>
               ))}
             </select>
