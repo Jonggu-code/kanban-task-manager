@@ -27,14 +27,14 @@ export const TaskCard = ({ task, index, onEdit, highlightQuery }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={() => onEdit(task)}
-          className={`group cursor-pointer rounded-lg border border-gray-100 bg-white p-3 shadow-sm transition-all hover:shadow-lg md:rounded-xl md:p-4 ${
+          className={`group cursor-pointer rounded-lg border border-gray-100 bg-white p-3 shadow-sm transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 md:rounded-xl md:p-4 ${
             snapshot.isDragging ? 'rotate-2 shadow-2xl md:rotate-3' : ''
           }`}
         >
           {/* 상단: 날짜 + 우선순위 */}
           <div className="mb-1.5 flex items-center justify-between md:mb-2">
             {task.createdAt && (
-              <div className="flex items-center gap-1 text-xs text-gray-400 md:gap-1.5">
+              <div className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 md:gap-1.5">
                 <svg
                   className="h-3 w-3 md:h-3.5 md:w-3.5"
                   fill="none"
@@ -59,13 +59,13 @@ export const TaskCard = ({ task, index, onEdit, highlightQuery }) => {
           </div>
 
           {/* 제목 */}
-          <h3 className="mb-1 text-sm font-bold text-gray-900 group-hover:text-blue-600 md:text-base">
+          <h3 className="mb-1 text-sm font-bold text-gray-900 group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400 md:text-base">
             <HighlightedText text={task.title} query={highlightQuery} />
           </h3>
 
           {/* 설명: 모바일에서는 1줄, 태블릿+에서는 2줄 */}
           {task.description && (
-            <p className="mb-2 line-clamp-1 text-xs leading-relaxed text-gray-500 md:mb-3 md:line-clamp-2 md:text-sm">
+            <p className="mb-2 line-clamp-1 text-xs leading-relaxed text-gray-500 dark:text-gray-400 md:mb-3 md:line-clamp-2 md:text-sm">
               <HighlightedText text={task.description} query={highlightQuery} />
             </p>
           )}
@@ -76,13 +76,13 @@ export const TaskCard = ({ task, index, onEdit, highlightQuery }) => {
               {task.tags.slice(0, 3).map((tag, idx) => (
                 <span
                   key={idx}
-                  className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 md:rounded-md md:px-2"
+                  className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300 md:rounded-md md:px-2"
                 >
                   {tag}
                 </span>
               ))}
               {task.tags.length > 3 && (
-                <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 md:rounded-md md:px-2">
+                <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300 md:rounded-md md:px-2">
                   +{task.tags.length - 3}
                 </span>
               )}

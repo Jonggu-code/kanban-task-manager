@@ -19,7 +19,7 @@ export const Column = ({
 }) => {
   return (
     <div
-      className={`flex w-full flex-col rounded-xl bg-white p-3 shadow-sm md:p-4 ${
+      className={`flex w-full flex-col rounded-xl bg-white p-3 shadow-sm dark:bg-gray-900 md:p-4 ${
         isMobile ? 'min-h-[400px]' : 'h-[500px] md:w-72 lg:h-[600px] lg:w-80'
       }`}
     >
@@ -33,7 +33,7 @@ export const Column = ({
           {title}
         </h2>
         <span
-          className={`flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold md:h-6 md:w-6 ${headerColor}`}
+          className={`flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold dark:bg-gray-950 md:h-6 md:w-6 ${headerColor}`}
         >
           {tasks.length}
         </span>
@@ -45,7 +45,7 @@ export const Column = ({
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={`custom-scrollbar space-y-3 overflow-y-auto pb-2 ${
-              snapshot.isDraggingOver ? 'bg-blue-50/50' : ''
+              snapshot.isDraggingOver ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''
             }`}
           >
             {tasks.length > 0 ? (
@@ -60,7 +60,9 @@ export const Column = ({
               ))
             ) : (
               <div className="flex h-32 items-center justify-center">
-                <p className="text-sm text-gray-400">태스크가 없습니다.</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500">
+                  태스크가 없습니다.
+                </p>
               </div>
             )}
             {provided.placeholder}

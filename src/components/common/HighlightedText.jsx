@@ -4,7 +4,7 @@ export const HighlightedText = ({
   text,
   query = '',
   className = '',
-  markClassName = 'rounded bg-yellow-200/80 px-0',
+  markClassName = 'rounded bg-yellow-200/80 px-0 dark:bg-yellow-300/20 dark:text-yellow-100',
 }) => {
   if (!text) return null
 

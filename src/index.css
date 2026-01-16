@@ -42,9 +42,22 @@
     background: rgba(156, 163, 175, 0.4);
   }
 
+  /* Dark mode 스크롤바 */
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.25);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.45);
+  }
+
   /* Firefox 스크롤바 */
   .custom-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: rgba(156, 163, 175, 0.2) transparent;
+  }
+
+  .dark .custom-scrollbar {
+    scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
   }
 }

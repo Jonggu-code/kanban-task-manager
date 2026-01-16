@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTasks } from './hooks/useTasks'
 import { useTaskFilter } from './hooks/useTaskFilter'
+import { useTheme } from './hooks/useTheme'
 import { Header } from './components/Header/Header'
 import { FilterBar } from './components/Filter/FilterBar'
 import { Board } from './components/Board'
@@ -9,6 +10,7 @@ import { EmptySearchResult } from './components/common/EmptySearchResult'
 import { createTask } from './data/taskStructure'
 
 function App() {
+  const { theme, toggleTheme } = useTheme()
   const {
     tasks,
     isLoading,
@@ -77,13 +79,15 @@ function App() {
   const shouldShowEmptyResult = filteredTasks.length === 0 && (hasSearch || hasFilters)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 dark:from-gray-950 dark:to-gray-900 dark:text-gray-100">
       <Header
         taskCount={tasks.length}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onAddTask={() => setIsModalOpen(true)}
         onReset={resetTasks}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       <main className="container mx-auto max-w-[900px] px-4 py-4 md:px-6 md:py-6 lg:max-w-[1000px]">

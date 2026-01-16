@@ -51,7 +51,7 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
   return (
     <div className="relative w-full md:w-auto">
       <svg
-        className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 md:left-3"
+        className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500 md:left-3"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -72,12 +72,12 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
-        className="w-full rounded-lg border border-gray-200 py-1.5 pl-8 pr-7 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:w-56 md:py-2 md:pl-9 md:pr-8"
+        className="w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-8 pr-7 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-blue-400 dark:focus:ring-blue-500/30 md:w-56 md:py-2 md:pl-9 md:pr-8"
       />
       {value && (
         <button
           onClick={() => onChange('')}
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-gray-400 hover:text-gray-600 md:right-2"
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 md:right-2"
         >
           <svg
             className="h-4 w-4"
@@ -97,15 +97,15 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
 
       {/* 최근 검색어 드롭다운 */}
       {showDropdown && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-full rounded-lg border border-gray-200 bg-white py-2 shadow-lg md:w-56">
+        <div className="absolute left-0 top-full z-50 mt-1 w-full rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-900 md:w-56">
           <div className="flex items-center justify-between px-3 pb-2">
-            <span className="text-xs font-medium text-gray-500">
+            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
               최근 검색어
             </span>
             <button
               onMouseDown={e => e.preventDefault()}
               onClick={clearRecentSearches}
-              className="text-xs text-gray-400 hover:text-gray-600"
+              className="text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-200"
             >
               전체 삭제
             </button>
@@ -116,11 +116,11 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
                 <div
                   onMouseDown={e => e.preventDefault()}
                   onClick={() => handleSelectRecent(query)}
-                  className="flex w-full cursor-pointer items-center justify-between px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+                  className="flex w-full cursor-pointer items-center justify-between px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800"
                 >
                   <div className="flex min-w-0 items-center gap-2">
                     <svg
-                      className="h-4 w-4 shrink-0 text-gray-400"
+                      className="h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -137,7 +137,7 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
                   <button
                     onMouseDown={e => e.preventDefault()}
                     onClick={e => handleRemoveRecent(e, query)}
-                    className="ml-2 shrink-0 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                    className="ml-2 shrink-0 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                   >
                     <svg
                       className="h-3 w-3"

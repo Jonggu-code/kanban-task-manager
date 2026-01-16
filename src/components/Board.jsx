@@ -43,13 +43,19 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
     switch (mobileActiveTab) {
       case TASK_STATUS.IN_PROGRESS:
         return {
-          headerColor: 'text-yellow-700',
-          headerBgColor: 'bg-yellow-100',
+          headerColor: 'text-yellow-700 dark:text-yellow-300',
+          headerBgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
         }
       case TASK_STATUS.DONE:
-        return { headerColor: 'text-green-700', headerBgColor: 'bg-green-100' }
+        return {
+          headerColor: 'text-green-700 dark:text-green-300',
+          headerBgColor: 'bg-green-100 dark:bg-green-900/30',
+        }
       default:
-        return { headerColor: 'text-blue-700', headerBgColor: 'bg-blue-100' }
+        return {
+          headerColor: 'text-blue-700 dark:text-blue-300',
+          headerBgColor: 'bg-blue-100 dark:bg-blue-900/30',
+        }
     }
   }
 
@@ -109,8 +115,8 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
         <Column
           title={TASK_STATUS_LABELS[TASK_STATUS.TODO]}
           tasks={todoTasks}
-          headerColor="text-blue-700"
-          headerBgColor="bg-blue-100"
+          headerColor="text-blue-700 dark:text-blue-300"
+          headerBgColor="bg-blue-100 dark:bg-blue-900/30"
           droppableId={TASK_STATUS.TODO}
           onTaskEdit={onTaskEdit}
           highlightQuery={highlightQuery}
@@ -118,8 +124,8 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
         <Column
           title={TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
           tasks={inProgressTasks}
-          headerColor="text-yellow-700"
-          headerBgColor="bg-yellow-100"
+          headerColor="text-yellow-700 dark:text-yellow-300"
+          headerBgColor="bg-yellow-100 dark:bg-yellow-900/30"
           droppableId={TASK_STATUS.IN_PROGRESS}
           onTaskEdit={onTaskEdit}
           highlightQuery={highlightQuery}
@@ -127,8 +133,8 @@ export const Board = ({ tasks, onTaskMove, onTaskEdit, highlightQuery }) => {
         <Column
           title={TASK_STATUS_LABELS[TASK_STATUS.DONE]}
           tasks={doneTasks}
-          headerColor="text-green-700"
-          headerBgColor="bg-green-100"
+          headerColor="text-green-700 dark:text-green-300"
+          headerBgColor="bg-green-100 dark:bg-green-900/30"
           droppableId={TASK_STATUS.DONE}
           onTaskEdit={onTaskEdit}
           highlightQuery={highlightQuery}

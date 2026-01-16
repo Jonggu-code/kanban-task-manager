@@ -39,7 +39,7 @@ export const FilterBar = ({
     <div className="mb-4 flex flex-wrap items-center justify-end gap-2 md:mb-6 md:gap-3">
       {/* 모바일에서 활성 필터 표시 */}
       {activeFilterCount > 0 && (
-        <span className="mr-auto text-xs text-gray-500 md:hidden">
+        <span className="mr-auto text-xs text-gray-500 dark:text-gray-400 md:hidden">
           필터 {activeFilterCount}개 적용
         </span>
       )}
@@ -47,7 +47,7 @@ export const FilterBar = ({
       <select
         value={priorityFilter}
         onChange={e => onPriorityChange(e.target.value)}
-        className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:px-3 md:py-2 md:text-sm"
+        className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30 md:px-3 md:py-2 md:text-sm"
       >
         <option value="all">우선순위</option>
         {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => (
@@ -61,7 +61,7 @@ export const FilterBar = ({
       <select
         value={statusFilter}
         onChange={e => onStatusChange(e.target.value)}
-        className="hidden rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:block md:px-3 md:py-2 md:text-sm"
+        className="hidden rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30 md:block md:px-3 md:py-2 md:text-sm"
       >
         <option value="all">전체 상태</option>
         {Object.entries(TASK_STATUS_LABELS).map(([value, label]) => (
@@ -74,7 +74,7 @@ export const FilterBar = ({
       <select
         value={sortBy}
         onChange={e => onSortChange(e.target.value)}
-        className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:px-3 md:py-2 md:text-sm"
+        className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30 md:px-3 md:py-2 md:text-sm"
       >
         {SORT_OPTIONS.map(({ value, label }) => (
           <option key={value} value={value}>

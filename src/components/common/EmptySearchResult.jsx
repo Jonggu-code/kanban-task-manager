@@ -24,8 +24,8 @@ export const EmptySearchResult = ({
   const resolvedActionLabel = actionLabel || '검색어 지우기'
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+    <div className="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-300">
         <svg
           className="h-6 w-6"
           fill="none"
@@ -40,16 +40,18 @@ export const EmptySearchResult = ({
           />
         </svg>
       </div>
-      <h2 className="text-base font-semibold text-gray-900 md:text-lg">
+      <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 md:text-lg">
         {resolvedTitle}
       </h2>
-      <p className="mt-1 text-sm text-gray-500">{resolvedDescription}</p>
+      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        {resolvedDescription}
+      </p>
       {onAction && (
         <div className="mt-5 flex justify-center">
           <button
             type="button"
             onClick={onAction}
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
           >
             {resolvedActionLabel}
           </button>
