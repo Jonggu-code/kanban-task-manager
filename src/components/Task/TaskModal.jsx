@@ -11,7 +11,13 @@ const formatDate = dateString => {
   })
 }
 
-export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
+export const TaskModal = ({
+  onClose,
+  onSubmit,
+  onDelete,
+  task = null,
+  closeSignal,
+}) => {
   const isEditMode = task !== null
   const [title, setTitle] = useState(task?.title || '')
   const [description, setDescription] = useState(task?.description || '')
@@ -49,6 +55,13 @@ export const TaskModal = ({ onClose, onSubmit, onDelete, task = null }) => {
       onClose()
     }, 180)
   }
+
+  useEffect(() => {
+    if (!closeSignal) return
+    requestClose()
+    // requestClose는 effect 재바인딩 방지를 위해 의존성에서 제외
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [closeSignal])
 
   const handleTouchStart = e => {
     touchStartY.current = e.touches[0].clientY

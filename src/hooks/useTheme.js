@@ -9,7 +9,7 @@ const getInitialTheme = () => {
     const saved = window.localStorage.getItem(THEME_STORAGE_KEY)
     if (saved === 'dark' || saved === 'light') return saved
   } catch {
-    // ignore storage errors
+    // localStorage 접근 실패는 무시
   }
 
   const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
@@ -31,7 +31,7 @@ export const useTheme = () => {
         try {
           window.localStorage.setItem(THEME_STORAGE_KEY, resolved)
         } catch {
-          // ignore storage errors
+          // localStorage 접근 실패는 무시
         }
         return resolved
       })

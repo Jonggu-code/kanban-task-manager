@@ -72,7 +72,7 @@
     background: rgba(156, 163, 175, 0.4);
   }
 
-  /* Dark mode 스크롤바 */
+  /* 다크 모드 스크롤바 */
   .dark .custom-scrollbar::-webkit-scrollbar-thumb {
     background: rgba(148, 163, 184, 0.25);
   }

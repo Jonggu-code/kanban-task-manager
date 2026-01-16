@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useRecentSearches } from '../../hooks/useRecentSearches'
 
 /**
@@ -10,15 +10,17 @@ import { useRecentSearches } from '../../hooks/useRecentSearches'
  * @param {function} props.onChange - 검색어 변경 핸들러
  * @param {function} props.onSearch - 검색 실행 핸들러 (Enter 키 또는 최근 검색어 선택 시)
  */
-export const SearchBar = ({ value, onChange, onSearch }) => {
+export const SearchBar = forwardRef(({ value, onChange, onSearch }, ref) => {
   const [isFocused, setIsFocused] = useState(false)
-  const inputRef = useRef(null)
+  const localInputRef = useRef(null)
   const {
     recentSearches,
     addRecentSearch,
     removeRecentSearch,
     clearRecentSearches,
   } = useRecentSearches()
+
+  useImperativeHandle(ref, () => localInputRef.current, [])
 
   // 드롭다운 표시 여부 (계산된 값)
   const showDropdown = isFocused && recentSearches.length > 0 && !value.trim()
@@ -28,10 +30,10 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
     if (e.key === 'Enter' && value.trim()) {
       addRecentSearch(value)
       onSearch?.(value)
-      inputRef.current?.blur()
+      localInputRef.current?.blur()
     }
     if (e.key === 'Escape') {
-      inputRef.current?.blur()
+      localInputRef.current?.blur()
     }
   }
 
@@ -39,7 +41,7 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
   const handleSelectRecent = query => {
     onChange(query)
     onSearch?.(query)
-    inputRef.current?.blur()
+    localInputRef.current?.blur()
   }
 
   // 최근 검색어 삭제 (x 버튼)
@@ -64,7 +66,7 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
         />
       </svg>
       <input
-        ref={inputRef}
+        ref={localInputRef}
         type="text"
         placeholder="검색..."
         value={value}
@@ -161,4 +163,4 @@ export const SearchBar = ({ value, onChange, onSearch }) => {
       )}
     </div>
   )
-}
+})

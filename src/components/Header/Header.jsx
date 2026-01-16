@@ -11,6 +11,7 @@ import { SearchBar } from '../Search/SearchBar'
  * @param {function} props.onReset - 테이블 초기화 버튼 클릭 핸들러
  * @param {'light'|'dark'} props.theme - 현재 테마
  * @param {function} props.onToggleTheme - 테마 토글 핸들러
+ * @param {Object} props.searchInputRef - 검색 input ref
  */
 export const Header = ({
   taskCount,
@@ -20,6 +21,7 @@ export const Header = ({
   onReset,
   theme,
   onToggleTheme,
+  searchInputRef,
 }) => {
   const isDark = theme === 'dark'
 
@@ -63,7 +65,11 @@ export const Header = ({
           {/* 검색 및 액션 버튼 영역 */}
           <div className="flex items-center gap-2 md:gap-3">
             <div className="flex-1 md:flex-none">
-              <SearchBar value={searchQuery} onChange={onSearchChange} />
+              <SearchBar
+                value={searchQuery}
+                onChange={onSearchChange}
+                ref={searchInputRef}
+              />
             </div>
             {/* 태블릿+에서만 보이는 버튼들 */}
             <button

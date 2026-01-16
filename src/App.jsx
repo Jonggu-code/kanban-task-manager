@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTasks } from './hooks/useTasks'
 import { useTaskFilter } from './hooks/useTaskFilter'
 import { useTheme } from './hooks/useTheme'
@@ -7,11 +7,15 @@ import { FilterBar } from './components/Filter/FilterBar'
 import { Board } from './components/Board'
 import { TaskModal } from './components/Task/TaskModal'
 import { EmptySearchResult } from './components/common/EmptySearchResult'
+import { KeyboardShortcutsModal } from './components/common/KeyboardShortcutsModal'
 import { createTask } from './data/taskStructure'
 
 function App() {
   const { theme, toggleTheme } = useTheme()
   const [pendingDeleteIds, setPendingDeleteIds] = useState(() => new Set())
+  const searchInputRef = useRef(null)
+  const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false)
+  const [taskModalCloseSignal, setTaskModalCloseSignal] = useState(0)
   const {
     tasks,
     isLoading,
@@ -37,13 +41,9 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="text-xl text-gray-600">로딩 중...</div>
-      </div>
-    )
-  }
+  const requestCloseTaskModal = useCallback(() => {
+    setTaskModalCloseSignal(prev => prev + 1)
+  }, [])
 
   const handleTaskMove = (taskId, newStatus) => {
     changeTaskStatus(taskId, newStatus)
@@ -93,7 +93,78 @@ function App() {
 
   const hasSearch = debouncedSearchQuery.trim() !== ''
   const hasFilters = priorityFilter !== 'all' || statusFilter !== 'all'
-  const shouldShowEmptyResult = filteredTasks.length === 0 && (hasSearch || hasFilters)
+  const shouldShowEmptyResult =
+    filteredTasks.length === 0 && (hasSearch || hasFilters)
+  const isTaskModalOpen = isModalOpen || Boolean(editingTask)
+
+  useEffect(() => {
+    if (isLoading) return
+
+    const isEditableTarget = target => {
+      if (!target) return false
+      const element = /** @type {HTMLElement} */ (target)
+      const tag = element.tagName?.toLowerCase()
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return true
+      return element.isContentEditable
+    }
+
+    const focusSearch = () => {
+      const node = searchInputRef.current
+      node?.focus?.()
+      node?.select?.()
+    }
+
+    const onKeyDown = e => {
+      // ESC: 도움말 모달 -> 태스크 모달 순서로 닫기
+      if (e.key === 'Escape') {
+        if (isShortcutsModalOpen) {
+          e.preventDefault()
+          setIsShortcutsModalOpen(false)
+          return
+        }
+        if (isTaskModalOpen) {
+          e.preventDefault()
+          requestCloseTaskModal()
+        }
+        return
+      }
+
+      if (isEditableTarget(e.target)) return
+
+      const cmdOrCtrl = e.metaKey || e.ctrlKey
+
+      // 도움말 모달이 열려있으면 다른 단축키는 무시
+      if (isShortcutsModalOpen) return
+
+      // Ctrl/⌘ + N: 새 태스크 추가
+      if (cmdOrCtrl && (e.key === 'n' || e.key === 'N')) {
+        if (isTaskModalOpen) return
+        e.preventDefault()
+        setIsModalOpen(true)
+        return
+      }
+
+      // / 또는 Ctrl/⌘ + K: 검색창 포커스
+      if (
+        (!cmdOrCtrl && !e.altKey && e.key === '/') ||
+        (cmdOrCtrl && (e.key === 'k' || e.key === 'K'))
+      ) {
+        e.preventDefault()
+        focusSearch()
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isLoading, isShortcutsModalOpen, isTaskModalOpen, requestCloseTaskModal])
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="text-xl text-gray-600">로딩 중...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 dark:from-gray-950 dark:to-gray-900 dark:text-gray-100">
@@ -105,6 +176,7 @@ function App() {
         onReset={resetTasks}
         theme={theme}
         onToggleTheme={toggleTheme}
+        searchInputRef={searchInputRef}
       />
 
       <main className="container mx-auto max-w-[900px] px-4 py-4 md:px-6 md:py-6 lg:max-w-[1000px]">
@@ -147,8 +219,24 @@ function App() {
           onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
           onDelete={handleDeleteTask}
           task={editingTask}
+          closeSignal={taskModalCloseSignal}
         />
       )}
+
+      <KeyboardShortcutsModal
+        isOpen={isShortcutsModalOpen}
+        onClose={() => setIsShortcutsModalOpen(false)}
+      />
+
+      <button
+        type="button"
+        onClick={() => setIsShortcutsModalOpen(true)}
+        className="fixed bottom-4 right-4 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg ring-1 ring-gray-200 transition hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-200 dark:ring-gray-800 dark:hover:bg-gray-800"
+        aria-label="단축키 도움말"
+        title="단축키 도움말"
+      >
+        <span className="text-lg font-bold leading-none">?</span>
+      </button>
     </div>
   )
 }
