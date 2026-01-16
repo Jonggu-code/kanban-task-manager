@@ -29,24 +29,39 @@ export const FilterBar = ({
   onStatusChange,
   onSortChange,
 }) => {
+  // 활성화된 필터 개수 계산
+  const activeFilterCount = [
+    priorityFilter !== 'all',
+    statusFilter !== 'all',
+  ].filter(Boolean).length
+
   return (
-    <div className="mb-6 flex items-center justify-end gap-3">
+    <div className="mb-4 flex flex-wrap items-center justify-end gap-2 md:mb-6 md:gap-3">
+      {/* 모바일에서 활성 필터 표시 */}
+      {activeFilterCount > 0 && (
+        <span className="mr-auto text-xs text-gray-500 md:hidden">
+          필터 {activeFilterCount}개 적용
+        </span>
+      )}
+
       <select
         value={priorityFilter}
         onChange={e => onPriorityChange(e.target.value)}
-        className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:px-3 md:py-2 md:text-sm"
       >
-        <option value="all">전체 우선순위</option>
+        <option value="all">우선순위</option>
         {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => (
           <option key={value} value={value}>
             {label}
           </option>
         ))}
       </select>
+
+      {/* 상태 필터: 모바일에서는 탭으로 대체되므로 숨김 */}
       <select
         value={statusFilter}
         onChange={e => onStatusChange(e.target.value)}
-        className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="hidden rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:block md:px-3 md:py-2 md:text-sm"
       >
         <option value="all">전체 상태</option>
         {Object.entries(TASK_STATUS_LABELS).map(([value, label]) => (
@@ -55,10 +70,11 @@ export const FilterBar = ({
           </option>
         ))}
       </select>
+
       <select
         value={sortBy}
         onChange={e => onSortChange(e.target.value)}
-        className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:px-3 md:py-2 md:text-sm"
       >
         {SORT_OPTIONS.map(({ value, label }) => (
           <option key={value} value={value}>

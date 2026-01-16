@@ -80,7 +80,7 @@ function App() {
         onReset={resetTasks}
       />
 
-      <main className="container mx-auto max-w-[1000px] px-6 py-8 md:py-6">
+      <main className="container mx-auto max-w-[1000px] px-4 py-4 md:px-6 md:py-6">
         <FilterBar
           priorityFilter={priorityFilter}
           statusFilter={statusFilter}
