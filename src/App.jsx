@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { useTasks } from './hooks/useTasks'
 import { useTaskFilter } from './hooks/useTaskFilter'
+import { Header } from './components/Header/Header'
+import { FilterBar } from './components/Filter/FilterBar'
 import { Board } from './components/Board'
 import { TaskModal } from './components/Task/TaskModal'
-import {
-  createTask,
-  TASK_PRIORITY_LABELS,
-  TASK_STATUS_LABELS,
-} from './data/taskStructure'
+import { createTask } from './data/taskStructure'
 
 function App() {
   const {
@@ -40,9 +38,6 @@ function App() {
     )
   }
 
-  /**
-   * 태스크 드래그 앤 드롭 핸들러
-   */
   const handleTaskMove = (taskId, newStatus) => {
     changeTaskStatus(taskId, newStatus)
   }
@@ -75,86 +70,21 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* 헤더 */}
-      <header className="border-b bg-white shadow-sm">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                칸반 태스크 매니저
-              </h1>
-              <p className="mt-2 text-sm text-gray-500">
-                총 {tasks.length}개의 태스크
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <svg
-                  className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-                <input
-                  type="text"
-                  placeholder="태스크 검색..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="w-48 rounded-lg border border-gray-200 py-2 pl-9 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-sm"
-              >
-                태스크 추가
-              </button>
-              <button
-                onClick={resetTasks}
-                className="rounded-lg bg-gray-100 px-4 py-2.5 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-200 hover:shadow-sm"
-              >
-                테이블 초기화
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header
+        taskCount={tasks.length}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onAddTask={() => setIsModalOpen(true)}
+        onReset={resetTasks}
+      />
 
-      <main className="container mx-auto max-w-[1000px] px-6 py-8 md:py-10">
-        {/* 필터 바 - 컬럼 위 */}
-        <div className="mb-6 flex items-center justify-end gap-3">
-          <select
-            value={priorityFilter}
-            onChange={e => setPriorityFilter(e.target.value)}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          >
-            <option value="all">전체 우선순위</option>
-            {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-          <select
-            value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          >
-            <option value="all">전체 상태</option>
-            {Object.entries(TASK_STATUS_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
+      <main className="container mx-auto max-w-[1000px] px-6 py-8 md:py-6">
+        <FilterBar
+          priorityFilter={priorityFilter}
+          statusFilter={statusFilter}
+          onPriorityChange={setPriorityFilter}
+          onStatusChange={setStatusFilter}
+        />
 
         <Board
           tasks={filteredTasks}
