@@ -22,9 +22,11 @@ function App() {
     debouncedSearchQuery,
     priorityFilter,
     statusFilter,
+    sortBy,
     setSearchQuery,
     setPriorityFilter,
     setStatusFilter,
+    setSortBy,
     filteredTasks,
   } = useTaskFilter(tasks)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -82,8 +84,10 @@ function App() {
         <FilterBar
           priorityFilter={priorityFilter}
           statusFilter={statusFilter}
+          sortBy={sortBy}
           onPriorityChange={setPriorityFilter}
           onStatusChange={setStatusFilter}
+          onSortChange={setSortBy}
         />
 
         <Board

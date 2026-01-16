@@ -8,15 +8,19 @@ import { useDebouncedValue } from './useDebouncedValue'
  * @param {Array} tasks - 필터링할 태스크 배열
  * @returns {Object} 필터 상태와 필터링된 태스크
  */
+// 우선순위 정렬을 위한 가중치
+const PRIORITY_WEIGHT = { high: 3, medium: 2, low: 1 }
+
 export const useTaskFilter = tasks => {
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
   const [priorityFilter, setPriorityFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [sortBy, setSortBy] = useState('newest') // newest, oldest, priority-high, priority-low
 
-  // 검색어 + 우선순위 + 상태 필터링 (AND 조건)
+  // 검색어 + 우선순위 + 상태 필터링 + 정렬
   const filteredTasks = useMemo(() => {
-    return tasks.filter(task => {
+    const filtered = tasks.filter(task => {
       const matchesSearch = debouncedSearchQuery.trim()
         ? task.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
         : true
@@ -26,7 +30,22 @@ export const useTaskFilter = tasks => {
         statusFilter === 'all' || task.status === statusFilter
       return matchesSearch && matchesPriority && matchesStatus
     })
-  }, [tasks, debouncedSearchQuery, priorityFilter, statusFilter])
+
+    // 정렬 적용
+    return [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case 'oldest':
+          return new Date(a.createdAt) - new Date(b.createdAt)
+        case 'priority-high':
+          return PRIORITY_WEIGHT[b.priority] - PRIORITY_WEIGHT[a.priority]
+        case 'priority-low':
+          return PRIORITY_WEIGHT[a.priority] - PRIORITY_WEIGHT[b.priority]
+        case 'newest':
+        default:
+          return new Date(b.createdAt) - new Date(a.createdAt)
+      }
+    })
+  }, [tasks, debouncedSearchQuery, priorityFilter, statusFilter, sortBy])
 
   // 필터 초기화
   const resetFilters = () => {
@@ -48,10 +67,12 @@ export const useTaskFilter = tasks => {
     debouncedSearchQuery,
     priorityFilter,
     statusFilter,
+    sortBy,
     // 필터 변경 함수
     setSearchQuery,
     setPriorityFilter,
     setStatusFilter,
+    setSortBy,
     resetFilters,
     // 필터링 결과
     filteredTasks,
