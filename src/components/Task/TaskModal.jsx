@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { TASK_PRIORITY, TASK_PRIORITY_LABELS } from '../../data/taskStructure'
+import {
+  TASK_PRIORITY,
+  TASK_PRIORITY_LABELS,
+  TASK_STATUS,
+  TASK_STATUS_LABELS,
+} from '../../data/taskStructure'
 
 const formatDate = dateString => {
   if (!dateString) return '-'
@@ -24,6 +29,7 @@ export const TaskModal = ({
   const [priority, setPriority] = useState(
     task?.priority || TASK_PRIORITY.MEDIUM
   )
+  const [status, setStatus] = useState(task?.status || TASK_STATUS.TODO)
   const [error, setError] = useState('')
 
   // 모바일 스와이프 관련 state
@@ -100,6 +106,7 @@ export const TaskModal = ({
       title: trimmedTitle,
       description: description.trim(),
       priority,
+      status,
     })
   }
 
@@ -120,7 +127,7 @@ export const TaskModal = ({
       }}
     >
       <div
-        className="max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-900 md:max-w-lg md:rounded-2xl md:p-6"
+        className="flex max-h-[90vh] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl dark:bg-gray-900 md:max-w-lg md:rounded-2xl"
         style={{
           opacity: panelOpacity,
           transform: `translateY(${panelTranslateY}px)`,
@@ -129,44 +136,52 @@ export const TaskModal = ({
             : 'transform 0.2s ease-out, opacity 0.2s ease-out',
         }}
       >
-        {/* 모바일 핸들바 */}
-        <div
-          className="mb-3 flex justify-center md:hidden touch-none"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div className="h-1 w-10 rounded-full bg-gray-300 dark:bg-gray-700" />
-        </div>
-
-        <div className="mb-3 flex items-center justify-between md:mb-4">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 md:text-xl">
-            {isEditMode ? '태스크 수정' : '새 태스크 추가'}
-          </h2>
-          <button
-            type="button"
-            onClick={() => requestClose()}
-            className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 md:px-2 md:py-1"
+        {/* 헤더(고정): 모바일 핸들바 + 타이틀 */}
+        <div className="shrink-0 border-b border-gray-100 px-4 pb-3 pt-3 dark:border-gray-800 md:px-6 md:pb-4 md:pt-4">
+          {/* 모바일 핸들바 */}
+          <div
+            className="mb-3 flex justify-center md:hidden touch-none"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
-            <svg
-              className="h-5 w-5 md:hidden"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <div className="h-1 w-10 rounded-full bg-gray-300 dark:bg-gray-700" />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 md:text-xl">
+              {isEditMode ? '태스크 수정' : '새 태스크 추가'}
+            </h2>
+            <button
+              type="button"
+              onClick={() => requestClose()}
+              className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 md:px-2 md:py-1"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            <span className="hidden text-sm md:inline">닫기</span>
-          </button>
+              <svg
+                className="h-5 w-5 md:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              <span className="hidden text-sm md:inline">닫기</span>
+            </button>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
-          <div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex min-h-0 flex-1 flex-col"
+        >
+          {/* 콘텐츠(스크롤): 입력 폼 */}
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4 md:space-y-4 md:px-6 md:py-5">
+            <div>
             <label className="mb-1.5 block text-sm font-semibold text-gray-700 dark:text-gray-300 md:mb-2">
               제목
             </label>
@@ -177,6 +192,27 @@ export const TaskModal = ({
               placeholder="제목을 입력해주세요."
             />
             {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
+          </div>
+
+          {/* 모바일 전용: 상태 변경 (DnD 대체) */}
+          <div className="md:hidden">
+            <label className="mb-1.5 block text-sm font-semibold text-gray-700 dark:text-gray-300 md:mb-2">
+              상태
+            </label>
+            <select
+              value={status}
+              onChange={event => setStatus(event.target.value)}
+              className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100 dark:focus:ring-blue-500/30 md:py-2"
+            >
+              {Object.values(TASK_STATUS).map(value => (
+                <option key={value} value={value}>
+                  {TASK_STATUS_LABELS[value]}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              모바일 환경에서는 드래그 앤 드롭 대신 상태를 직접 선택할 수 있어요.
+            </p>
           </div>
 
           <div>
@@ -250,8 +286,11 @@ export const TaskModal = ({
               </div>
             </div>
           )}
+          </div>
 
-          <div className="flex flex-col-reverse gap-2 pt-2 md:flex-row md:justify-between md:pt-2">
+          {/* 하단 액션(고정): 취소/저장/삭제 */}
+          <div className="shrink-0 border-t border-gray-100 px-4 py-3 dark:border-gray-800 md:px-6 md:py-4">
+            <div className="flex flex-col-reverse gap-2 md:flex-row md:justify-between">
             {/* 모바일: 아래에서 위로 (취소 -> 생성) / 삭제는 맨 아래 */}
             <div
               className={`flex w-full gap-2 md:w-auto ${isEditMode && onDelete ? '' : 'md:ml-auto'}`}
@@ -285,6 +324,7 @@ export const TaskModal = ({
                 {isEditMode ? '수정 완료' : '태스크 생성'}
               </button>
             </div>
+          </div>
           </div>
         </form>
       </div>
