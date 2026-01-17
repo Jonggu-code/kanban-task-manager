@@ -145,7 +145,7 @@ function App() {
       if (isShortcutsModalOpen) return
 
       // Ctrl/⌘ + N: 새 태스크 추가
-      if (cmdOrCtrl && (e.key === 'n' || e.key === 'N')) {
+      if (cmdOrCtrl && e.altKey && (e.key === 'n' || e.key === 'N')) {
         if (isTaskModalOpen) return
         e.preventDefault()
         setIsModalOpen(true)
