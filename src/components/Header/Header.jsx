@@ -23,7 +23,7 @@ export const Header = ({
 }) => {
   return (
     <header className="border-b bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-4 md:px-6 md:py-6">
+      <div className="mx-auto max-w-[1000px] px-4 py-4 md:px-6 md:py-6">
         {/* 모바일: 수직 레이아웃, 태블릿+: 수평 레이아웃 */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-0">
           {/* 타이틀 영역 */}
