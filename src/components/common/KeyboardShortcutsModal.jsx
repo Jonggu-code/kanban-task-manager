@@ -46,7 +46,7 @@ export const KeyboardShortcutsModal = ({ isOpen, onClose }) => {
           <li className="flex items-center justify-between gap-4 rounded-lg border border-gray-200 px-3 py-2 dark:border-gray-800">
             <span>새 태스크 추가</span>
             <kbd className="rounded bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-200">
-              Ctrl/⌘ + N
+              Ctrl/⌘ + Alt + N
             </kbd>
           </li>
           <li className="flex items-center justify-between gap-4 rounded-lg border border-gray-200 px-3 py-2 dark:border-gray-800">
