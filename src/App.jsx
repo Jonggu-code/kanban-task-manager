@@ -182,7 +182,7 @@ function App() {
         showReset={import.meta.env.DEV}
       />
 
-      <main className="container mx-auto max-w-[900px] px-4 py-4 md:px-6 md:py-6 lg:max-w-[1000px]">
+      <main className="mx-auto max-w-[1000px] px-4 py-4 md:px-6 md:py-6">
         <LoadErrorBanner
           message={loadError}
           onRetry={reloadTasks}
