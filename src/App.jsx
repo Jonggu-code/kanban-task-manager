@@ -9,6 +9,9 @@ import { TaskModal } from './components/Task/TaskModal'
 import { EmptySearchResult } from './components/common/EmptySearchResult'
 import { KeyboardShortcutsModal } from './components/common/KeyboardShortcutsModal'
 import { MoveTopButton } from './components/common/MoveTopButton'
+import { LoadingScreen } from './components/common/LoadingScreen'
+import { LoadErrorBanner } from './components/common/LoadErrorBanner'
+import { FloatingActions } from './components/common/FloatingActions'
 import { createTask } from './data/taskStructure'
 
 function App() {
@@ -21,7 +24,10 @@ function App() {
   const {
     tasks,
     isLoading,
+    error: loadError,
     resetTasks,
+    reloadTasks,
+    clearError,
     changeTaskStatus,
     addTask,
     updateTask,
@@ -161,11 +167,7 @@ function App() {
   }, [isLoading, isShortcutsModalOpen, isTaskModalOpen, requestCloseTaskModal])
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="text-xl text-gray-600">로딩 중...</div>
-      </div>
-    )
+    return <LoadingScreen />
   }
 
   return (
@@ -177,9 +179,17 @@ function App() {
         onAddTask={() => setIsModalOpen(true)}
         onReset={resetTasks}
         searchInputRef={searchInputRef}
+        showReset={import.meta.env.DEV}
       />
 
       <main className="container mx-auto max-w-[900px] px-4 py-4 md:px-6 md:py-6 lg:max-w-[1000px]">
+        <LoadErrorBanner
+          message={loadError}
+          onRetry={reloadTasks}
+          onReset={resetTasks}
+          onClose={clearError}
+        />
+
         <FilterBar
           priorityFilter={priorityFilter}
           statusFilter={statusFilter}
@@ -187,6 +197,7 @@ function App() {
           onPriorityChange={setPriorityFilter}
           onStatusChange={setStatusFilter}
           onSortChange={setSortBy}
+          onReset={resetFilters}
         />
 
         {shouldShowEmptyResult ? (
@@ -229,56 +240,20 @@ function App() {
       />
 
       <MoveTopButton />
-
-      <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3">
-        <button
-          type="button"
-          onClick={toggleTheme}
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg ring-1 ring-gray-200 transition hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-200 dark:ring-gray-800 dark:hover:bg-gray-800"
-          aria-label="다크 모드 전환"
-          title={isDark ? '라이트 모드' : '다크 모드'}
-        >
-          {isDark ? (
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364-1.414 1.414M7.05 16.95l-1.414 1.414m0-11.314 1.414 1.414m11.314 11.314 1.414 1.414M12 8a4 4 0 100 8 4 4 0 000-8z"
-              />
-            </svg>
-          ) : (
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"
-              />
-            </svg>
-          )}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setIsShortcutsModalOpen(true)}
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg ring-1 ring-gray-200 transition hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-200 dark:ring-gray-800 dark:hover:bg-gray-800"
-          aria-label="단축키 도움말"
-          title="단축키 도움말"
-        >
-          <span className="text-lg font-bold leading-none">?</span>
-        </button>
-      </div>
+      <FloatingActions
+        isDark={isDark}
+        onToggleTheme={toggleTheme}
+        onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
+        showErrorDemoButton={import.meta.env.DEV}
+        onShowErrorDemo={() => {
+          try {
+            window.localStorage.setItem('kanban-tasks', '{broken-json')
+          } catch {
+            // localStorage 접근 실패는 무시
+          }
+          reloadTasks()
+        }}
+      />
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { SearchBar } from '../Search/SearchBar'
  * @param {function} props.onAddTask - 태스크 추가 버튼 클릭 핸들러
  * @param {function} props.onReset - 테이블 초기화 버튼 클릭 핸들러
  * @param {Object} props.searchInputRef - 검색 input ref
+ * @param {boolean} [props.showReset=true] - 태스크 초기화 버튼 표시 여부
  */
 export const Header = ({
   taskCount,
@@ -18,6 +19,7 @@ export const Header = ({
   onAddTask,
   onReset,
   searchInputRef,
+  showReset = true,
 }) => {
   return (
     <header className="border-b bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -72,12 +74,14 @@ export const Header = ({
             >
               태스크 추가
             </button>
-            <button
-              onClick={onReset}
-              className="shrink-0 rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700 transition-all hover:bg-gray-200 hover:shadow-sm dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 md:px-4 md:py-2.5 md:text-sm"
-            >
-              태스크 초기화
-            </button>
+            {showReset && (
+              <button
+                onClick={onReset}
+                className="shrink-0 rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700 transition-all hover:bg-gray-200 hover:shadow-sm dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 md:px-4 md:py-2.5 md:text-sm"
+              >
+                태스크 초기화
+              </button>
+            )}
           </div>
         </div>
       </div>

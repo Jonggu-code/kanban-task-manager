@@ -9,9 +9,13 @@ const STORAGE_KEY = 'kanban-tasks'
 /**
  * localStorage에서 태스크 데이터를 불러옴
  * @param {Array} fallbackData - 데이터가 없을 때 사용할 기본값
+ * @param {Object} [options]
+ * @param {boolean} [options.throwOnError=false] - 파싱/형식 오류 시 예외를 던질지 여부
  * @returns {Array} 태스크 배열
  */
-export const loadTasks = fallbackData => {
+export const loadTasks = (fallbackData, options = {}) => {
+  const { throwOnError = false } = options
+
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
 
@@ -25,9 +29,18 @@ export const loadTasks = fallbackData => {
     }
 
     const parsed = JSON.parse(stored)
-    return Array.isArray(parsed) ? parsed : []
+
+    if (!Array.isArray(parsed)) {
+      if (throwOnError) {
+        throw new Error('저장된 태스크 데이터 형식이 올바르지 않습니다.')
+      }
+      return []
+    }
+
+    return parsed
   } catch (error) {
     console.error('localStorage에서 태스크를 불러오는데 실패했습니다:', error)
+    if (throwOnError) throw error
     return fallbackData || []
   }
 }

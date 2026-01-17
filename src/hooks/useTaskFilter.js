@@ -49,9 +49,9 @@ export const useTaskFilter = tasks => {
 
   // 필터 초기화
   const resetFilters = () => {
-    setSearchQuery('')
     setPriorityFilter('all')
     setStatusFilter('all')
+    setSortBy('newest')
   }
 
   // 활성화된 필터 개수

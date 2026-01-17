@@ -20,6 +20,7 @@ const SORT_OPTIONS = [
  * @param {function} props.onPriorityChange - 우선순위 필터 변경 핸들러
  * @param {function} props.onStatusChange - 상태 필터 변경 핸들러
  * @param {function} props.onSortChange - 정렬 변경 핸들러
+ * @param {function} props.onReset - 필터 초기화 핸들러
  */
 export const FilterBar = ({
   priorityFilter,
@@ -28,6 +29,7 @@ export const FilterBar = ({
   onPriorityChange,
   onStatusChange,
   onSortChange,
+  onReset,
 }) => {
   // 활성화된 필터 개수 계산
   const activeFilterCount = [
@@ -82,6 +84,22 @@ export const FilterBar = ({
           </option>
         ))}
       </select>
+
+      <button
+        type="button"
+        onClick={onReset}
+        className="rounded-lg border border-gray-200 bg-white p-2 text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
+        aria-label="필터 초기화"
+        title="필터 초기화"
+      >
+        <svg
+          className="h-4 w-4"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M17.65 6.35A7.95 7.95 0 0012 4V1L7 6l5 5V7c2.76 0 5 2.24 5 5a5 5 0 01-9.9 1H5.02A7 7 0 0019 12c0-1.93-.78-3.68-2.05-4.95z" />
+        </svg>
+      </button>
     </div>
   )
 }
