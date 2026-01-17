@@ -1,6 +1,8 @@
 # 칸반 태스크 매니저
 
-React + Vite 기반의 칸반 보드 형태 태스크 관리 애플리케이션입니다. 드래그 앤 드롭으로 상태를 이동하고, 검색/필터/정렬로 원하는 태스크를 빠르게 찾을 수 있습니다.
+React + Vite 기반의 칸반 보드 형태 태스크 관리 애플리케이션입니다.
+칸반(할 일/진행 중/완료) 보드를 기반으로 태스크를 생성·관리하고, 드래그 앤 드롭으로 상태를 이동할 수 있습니다.
+색/필터/정렬로 원하는 태스크를 빠르게 찾을 수 있으며, 데이터와 테마는 localStorage에 저장되어 새로고침 후에도 유지됩니다.
 
 ## 배포 URL
 
@@ -23,6 +25,40 @@ npm run dev
 ## 개발 기간
 
 2025.01.16 ~ 2025.01.18 (3일)
+
+## 사용 기술 스택
+
+| 분류            | 기술                                     |
+| --------------- | ---------------------------------------- |
+| Framework       | React 19                                 |
+| Language        | JavaScript (ESM)                         |
+| Build Tool      | Vite                                     |
+| Styling         | Tailwind CSS v3.4                        |
+| Drag & Drop     | @hello-pangea/dnd                        |
+| Lint            | ESLint                                   |
+| Code Formatting | Prettier (+ prettier-plugin-tailwindcss) |
+| Deployment      | GitHub Pages (GitHub Actions)            |
+
+## 프로젝트 구조
+
+```
+src/
+├── components/
+│   ├── Board/                 # 모바일 상태 탭 등 보드 하위 UI
+│   ├── Filter/                # 필터/정렬 바
+│   ├── Header/                # 헤더(검색/추가/리셋)
+│   ├── Search/                # 검색창(최근 검색어 포함)
+│   ├── Task/                  # 태스크 모달
+│   ├── common/                # 공용 컴포넌트(빈 결과, 단축키 모달 등)
+│   ├── Board.jsx              # 보드 메인
+│   ├── Column.jsx             # 컬럼
+│   └── TaskCard.jsx           # 태스크 카드
+├── hooks/                     # 상태/필터/테마 훅
+├── data/                      # 데이터 구조, 초기 데이터
+├── utils/                     # localStorage 유틸
+├── App.jsx
+└── main.jsx
+```
 
 ## 구현 기능 목록 (Priority별)
 
@@ -95,19 +131,6 @@ npm run dev
 | 마감일(Due Date) 입력/표시 | DatePicker 도입 및 날짜 유효성/타임존 처리까지 포함하면 범위가 커져 개발 기간 내 우선순위를 낮춤 |
 | 태그 추가/편집             | UI/상태 관리/필터까지 연동 범위가 커져 핵심 플로우(CRUD + DnD + 검색/필터/정렬) 먼저 완성        |
 
-## 사용 기술 스택
-
-| 분류            | 기술                                     |
-| --------------- | ---------------------------------------- |
-| Framework       | React 19                                 |
-| Language        | JavaScript (ESM)                         |
-| Build Tool      | Vite                                     |
-| Styling         | Tailwind CSS v3.4                        |
-| Drag & Drop     | @hello-pangea/dnd                        |
-| Lint            | ESLint                                   |
-| Code Formatting | Prettier (+ prettier-plugin-tailwindcss) |
-| Deployment      | GitHub Pages (GitHub Actions)            |
-
 ## 데이터/저장 방식
 
 - 태스크: localStorage `kanban-tasks`
@@ -121,27 +144,6 @@ npm run dev
 | 새 태스크 추가 | `Ctrl + N` (macOS: `Cmd + N`)          |
 | 검색창 포커스  | `/` 또는 `Ctrl + K` (macOS: `Cmd + K`) |
 | 모달 닫기      | `Esc`                                  |
-
-## 프로젝트 구조
-
-```
-src/
-├── components/
-│   ├── Board/                 # 모바일 상태 탭 등 보드 하위 UI
-│   ├── Filter/                # 필터/정렬 바
-│   ├── Header/                # 헤더(검색/추가/리셋)
-│   ├── Search/                # 검색창(최근 검색어 포함)
-│   ├── Task/                  # 태스크 모달
-│   ├── common/                # 공용 컴포넌트(빈 결과, 단축키 모달 등)
-│   ├── Board.jsx              # 보드 메인
-│   ├── Column.jsx             # 컬럼
-│   └── TaskCard.jsx           # 태스크 카드
-├── hooks/                     # 상태/필터/테마 훅
-├── data/                      # 데이터 구조, 초기 데이터
-├── utils/                     # localStorage 유틸
-├── App.jsx
-└── main.jsx
-```
 
 ## 트러블슈팅
 
@@ -166,14 +168,16 @@ src/
 ### 사용한 AI 도구
 
 - Claude (Anthropic)
+- GPT (Codex, OpenAI)
 
 ### 활용 방법
 
 - 프로젝트 구조/컴포넌트 분리 방향 검토
-- 반복적인 UI/로직 패턴 작성 보조
+- 반복적인 UI/로직 패턴 작성 보조 및 리팩터링 아이디어 참고
+- README/기능 목록 정리 및 문서 표현 다듬기
 - 작성한 코드에 대한 개선점 리뷰 및 트러블슈팅 실마리 탐색
 
-모든 코드는 직접 작성하였으며, AI는 개발 생산성 향상을 위한 참고 도구로만 활용했습니다. 각 코드의 동작 원리를 이해하고 설명할 수 있는 수준으로 구현했습니다.
+모든 코드는 직접 작성하였으며, AI는 개발 생산성 향상을 위한 참고 도구로만 활용했습니다. 제안된 내용은 검토 후 반영했으며, 최종 구현/검증은 직접 수행했습니다.
 
 ## 간단한 프로젝트 설명
 
